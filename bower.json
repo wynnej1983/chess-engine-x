@@ -1,0 +1,24 @@
+{
+  "name": "chess-engine-x",
+  "version": "0.1.0",
+  "main": "dist/cex.js",
+  "ignore": [
+    ".*",
+    "*.custom.*",
+    "*.template.*",
+    "*.log",
+    "*.map",
+    "*.md",
+    "/*.min.*",
+    "index.js",
+    "component.json",
+    "package.json",
+    "coverage",
+    "doc",
+    "modularize",
+    "node_modules",
+    "perf",
+    "test",
+    "vendor"
+  ]
+}

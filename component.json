@@ -1,0 +1,15 @@
+{
+  "name": "chess-engine-x",
+  "repo": "chess-engine-x/chess-engine-x",
+  "version": "0.1.0",
+  "description": "chess engine for browser and node",
+  "license": "MIT",
+  "main": "dist/cex.js",
+  "keywords": [
+    "chess",
+    "game",
+    "engine",
+    "javascript"
+  ],
+  "scripts": ["dist/cex.js"]
+}

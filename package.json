@@ -1,0 +1,31 @@
+{
+  "name": "chess-engine-x",
+  "version": "0.1.0",
+  "description": "chess engine for browser and node",
+  "main": "./dist/cex.js",
+  "scripts": {
+    "test": "mocha",
+    "build": "browserify ./lib/engine.js -d --s cex > ./dist/cex.js"
+  },
+  "devDependencies": {
+    "browserify": "latest",
+    "mocha": "^1.19.0",
+    "should": "^4.0.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wynnej1983/chess-engine-x"
+  },
+  "keywords": [
+    "chess",
+    "game",
+    "engine",
+    "javascript"
+  ],
+  "author": "Jonathan Wynne <wynnej1983@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/wynnej1983/chess-engine-x/issues"
+  },
+  "homepage": "https://github.com/wynnej1983/chess-engine-x"
+}
