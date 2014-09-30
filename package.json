@@ -4,8 +4,8 @@
   "description": "chess engine for browser and node",
   "main": "./dist/cex.js",
   "scripts": {
-    "test": "mocha",
-    "build": "browserify ./lib/engine.js -d --s cex > ./dist/cex.js"
+    "test": "./node_modules/.bin/mocha",
+    "build": "./node_modules/.bin/browserify ./lib/engine.js -d --s cex > ./dist/cex.js"
   },
   "devDependencies": {
     "browserify": "latest",
@@ -27,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/wynnej1983/chess-engine-x/issues"
   },
-  "homepage": "https://github.com/wynnej1983/chess-engine-x"
+  "homepage": "https://github.com/wynnej1983/chess-engine-x",
+  "dependencies": {
+    "lodash": "^2.4.1"
+  }
 }

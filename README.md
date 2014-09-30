@@ -5,10 +5,11 @@ A chess engine which can be consumed by the browser or node
 
 ## Installation
 
-  npm install chess-engine-x --save
+  $ npm install chess-engine-x --save
 
 ## Usage
 
+```javascript
   var cex = require('chess-engine-x'),
       game = new cex.Game();
 
@@ -20,11 +21,11 @@ A chess engine which can be consumed by the browser or node
   });
   game.start();
   game.move('d2d4');
-  
+``` 
 
 ## Tests
 
-  npm test
+  $ npm test
 
 ## Contributing
 
