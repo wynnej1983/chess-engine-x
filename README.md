@@ -5,7 +5,7 @@ A chess engine which can be consumed by the browser or node
 
 ## Installation
 
-  $ npm install chess-engine-x --save
+    $ npm install chess-engine-x --save
 
 ## Usage
 
@@ -20,12 +20,12 @@ A chess engine which can be consumed by the browser or node
     console.log('game over!');
   });
   game.start();
-  game.move('d2d4');
+  game.move('e2e4');
 ``` 
 
 ## Tests
 
-  $ npm test
+    $ npm test
 
 ## Contributing
 
