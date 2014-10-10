@@ -4,23 +4,11 @@ var should = require('should'),
 describe("Move", function() {
   describe("constructor", function() {
     it("should throw error if no arguments passed", function() {
-      var threw = false;
-      try {
-        new Move();
-      } catch (ex) {
-        threw = true;
-      }
-      threw.should.be.true;
+      (function(){new Move()}).should.throw();
     });
 
     it("should throw error if arguments are not a string", function() {
-      var threw = false;
-      try {
-        new Move({});
-      } catch (ex) {
-        threw = true;
-      }
-      threw.should.be.true;
+      (function(){new Move({})}).should.throw();
     });
 
     it("should parse src and dest from args", function() {
