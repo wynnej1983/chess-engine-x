@@ -12,20 +12,19 @@ describe('Board', function() {
       var board = new Board();
       board.squares.should.be.ok;
       board.squares.should.be.an.Array;
-      Board.Dim.should.equal(8);
+      Board.SIZE.should.equal(8);
     })
 
     it('should init board empty with squares', function() {
       var board = new Board();
       board.squares.length.should.equal(8);
-      board.squares[0].length.should.equal(8);
-      board.squares[1].length.should.equal(8);
-      board.squares[2].length.should.equal(8);
-      board.squares[3].length.should.equal(8);
-      board.squares[4].length.should.equal(8);
-      board.squares[5].length.should.equal(8);
-      board.squares[6].length.should.equal(8);
-      board.squares[7].length.should.equal(8);
+      board.squares.forEach(function(rank){
+        rank.should.be.an.Array;
+        rank.length.should.equal(8);
+        rank.forEach(function(square){
+          square.should.equal('');
+        });
+      });
       console.log(board.print());
     })
   })

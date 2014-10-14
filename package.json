@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "browserify": "latest",
+    "chalk": "^0.5.1",
     "mocha": "^1.19.0",
     "should": "^4.0.4"
   },
@@ -29,6 +30,7 @@
   },
   "homepage": "https://github.com/wynnej1983/chess-engine-x",
   "dependencies": {
+    "chalk": "^0.5.1",
     "lodash": "^2.4.1"
   }
 }
