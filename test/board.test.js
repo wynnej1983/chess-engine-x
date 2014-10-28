@@ -33,6 +33,104 @@ describe('Board', function() {
       var board = new Board();
       board.setup();
     })
+
+    it('should setup board based on starting position fen provided', function() {
+      var board = new Board();
+      var fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+      board.setup(fen);
+    })
+
+    it('should setup board when fen called multiple times', function() {
+      var board = new Board();
+      var fen = '3r2k1/ppp3pn/3p2Qp/4n3/4Nqb1/8/PPP2PPP/4R1K1 b KQkq - 1 2';
+      board.setup(fen);
+      fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+      board.setup(fen);
+    })
+
+    it('should set player to move from fen', function() {
+      var board = new Board();
+      var fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+      board.setup(fen);
+      board.isWhiteTurn.should.be.true;
+      fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1';
+      board.setup(fen);
+      board.isWhiteTurn.should.be.false;
+    })
+
+    it('should set castling permissions from fen', function() {
+      var board = new Board(),
+
+      fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w - - 0 1';
+      board.setup(fen);
+      board.castlingPermissions.should.equal(Board.CASTLING_PERMISSIONS.NONE);
+
+      fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+      board.setup(fen);
+      board.castlingPermissions.should.equal(Board.CASTLING_PERMISSIONS.ALL);
+
+      fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w K - 0 1';
+      board.setup(fen);
+      board.castlingPermissions.should.equal(Board.CASTLING_PERMISSIONS.WHITE_KING_SIDE);
+
+      fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Q - 0 1';
+      board.setup(fen);
+      board.castlingPermissions.should.equal(Board.CASTLING_PERMISSIONS.WHITE_QUEEN_SIDE);
+
+      fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w k - 0 1';
+      board.setup(fen);
+      board.castlingPermissions.should.equal(Board.CASTLING_PERMISSIONS.BLACK_KING_SIDE);
+
+      fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w q - 0 1';
+      board.setup(fen);
+      board.castlingPermissions.should.equal(Board.CASTLING_PERMISSIONS.BLACK_QUEEN_SIDE);
+
+      fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQ - 0 1';
+      board.setup(fen);
+      board.castlingPermissions.should.equal(Board.CASTLING_PERMISSIONS.WHITE_KING_SIDE | Board.CASTLING_PERMISSIONS.WHITE_QUEEN_SIDE);
+
+      fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Kk - 0 1';
+      board.setup(fen);
+      board.castlingPermissions.should.equal(Board.CASTLING_PERMISSIONS.WHITE_KING_SIDE | Board.CASTLING_PERMISSIONS.BLACK_KING_SIDE);
+
+      fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Kq - 0 1';
+      board.setup(fen);
+      board.castlingPermissions.should.equal(Board.CASTLING_PERMISSIONS.WHITE_KING_SIDE | Board.CASTLING_PERMISSIONS.BLACK_QUEEN_SIDE);
+
+      fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Qk - 0 1';
+      board.setup(fen);
+      board.castlingPermissions.should.equal(Board.CASTLING_PERMISSIONS.WHITE_QUEEN_SIDE | Board.CASTLING_PERMISSIONS.BLACK_KING_SIDE);
+
+      fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Qq - 0 1';
+      board.setup(fen);
+      board.castlingPermissions.should.equal(Board.CASTLING_PERMISSIONS.WHITE_QUEEN_SIDE | Board.CASTLING_PERMISSIONS.BLACK_QUEEN_SIDE);
+
+      fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQk - 0 1';
+      board.setup(fen);
+      board.castlingPermissions.should.equal(Board.CASTLING_PERMISSIONS.WHITE_KING_SIDE | Board.CASTLING_PERMISSIONS.WHITE_QUEEN_SIDE | Board.CASTLING_PERMISSIONS.BLACK_KING_SIDE);
+
+      fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQq - 0 1';
+      board.setup(fen);
+      board.castlingPermissions.should.equal(Board.CASTLING_PERMISSIONS.WHITE_KING_SIDE | Board.CASTLING_PERMISSIONS.WHITE_QUEEN_SIDE | Board.CASTLING_PERMISSIONS.BLACK_QUEEN_SIDE);
+
+      fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Kkq - 0 1';
+      board.setup(fen);
+      board.castlingPermissions.should.equal(Board.CASTLING_PERMISSIONS.WHITE_KING_SIDE | Board.CASTLING_PERMISSIONS.BLACK_KING_SIDE | Board.CASTLING_PERMISSIONS.BLACK_QUEEN_SIDE);
+
+      fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w Qkq - 0 1';
+      board.setup(fen);
+      board.castlingPermissions.should.equal(Board.CASTLING_PERMISSIONS.WHITE_QUEEN_SIDE | Board.CASTLING_PERMISSIONS.BLACK_QUEEN_SIDE | Board.CASTLING_PERMISSIONS.BLACK_KING_SIDE);
+    })
+
+    it('should set en passant target from fen', function() {
+      var board = new Board(),
+      fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+      board.setup(fen);
+      (board.enPassant === null).should.be.true;
+      fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq e3 0 1';
+      board.setup(fen);
+      board.enPassant.should.equal('e3');
+    })
   })
 
   describe('#san2Pos()', function() {
@@ -43,9 +141,14 @@ describe('Board', function() {
   })
 
   describe('#pos2San()', function() {
-    it('should convert 00 to a1', function() {
+    it('should convert pos to san given {x,y}', function() {
       var board = new Board();
       board.pos2San({x:0,y:0}).should.equal('a1');
+    })
+
+    it('should convert pos to san given x,y', function() {
+      var board = new Board();
+      board.pos2San(0,0).should.equal('a1');
     })
   })
 
@@ -74,28 +177,30 @@ describe('Board', function() {
   })
 
   describe('#move()', function() {
-    it('should move e2e4', function() {
+    it('should move', function() {
       var board = new Board();
       board.setup();
       board.move('e2e4').should.be.ok;
+      board.pieceAt('e2').should.equal('');
       board.pieceAt('e4').should.equal('P');
     })
 
-    it('should not move e7e5', function() {
+    it('should not move when opponents turn', function() {
       var board = new Board();
       board.setup();
       (board.move('e7e5') === null).should.be.true;
+      board.pieceAt('e7').should.equal('p');
+      board.pieceAt('e5').should.equal('');
     })
 
-    it('should move move e4xd5', function() {
+    it('should move and capture', function() {
       var board = new Board();
       board.place('Pe4');
       board.place('pd5');
-      console.log(board.print());
       board.move('e4xd5').should.be.ok;
-      console.log(board.print());
       board.pieceAt('e4').should.be.equal('');
       board.pieceAt('d5').should.be.equal('P');
+      board.captures.should.containEql('p');
     })
   })
 })
