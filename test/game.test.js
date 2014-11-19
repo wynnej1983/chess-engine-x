@@ -86,7 +86,7 @@ describe('Game', function() {
   })
 
   describe('#move()', function() {
-    describe('invalid moves', function() {
+    describe('illegal moves', function() {
       it('should throw error if no arguments passed', function() {
         var game = new Game();
         game.start();
@@ -133,7 +133,7 @@ describe('Game', function() {
       })
     });
 
-    describe('valid moves', function() {
+    describe('illegal moves', function() {
       it('should be able to make first move of e2e4 when white starts', function() {
         var game = new Game();
         game.start();
@@ -184,7 +184,6 @@ describe('Game', function() {
           game.move('e4xd5').should.be.ok;
           game.moveList.length.should.equal(5);
           game.captures.length.should.equal(1);
-          //console.log(game.board.print());
         })
       })
 

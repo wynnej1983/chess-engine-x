@@ -1,5 +1,6 @@
 var should      = require('should'),
     Board       = require('../lib/board.js');
+    Empty       = require('../lib/empty.js');
 
 describe('Board', function() {
   describe('constructor', function() {
@@ -15,14 +16,14 @@ describe('Board', function() {
       Board.SIZE.should.equal(8);
     })
 
-    it('should init board empty with squares', function() {
+    it('should init board with empty squares', function() {
       var board = new Board();
       board.squares.length.should.equal(8);
       board.squares.forEach(function(rank){
         rank.should.be.an.Array;
         rank.length.should.equal(8);
         rank.forEach(function(square){
-          square.should.equal('');
+          square.should.be.instanceOf(Empty);
         });
       });
     })
@@ -36,7 +37,7 @@ describe('Board', function() {
 
     it('should setup board based on starting position fen provided', function() {
       var board = new Board();
-      var fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+      var fen = 'rnbqkbnr/ppp3pp/8/8/8/8/PPP3PP/RNBQKBNR w KQkq - 0 1';
       board.setup(fen);
     })
 
@@ -126,10 +127,42 @@ describe('Board', function() {
       var board = new Board(),
       fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
       board.setup(fen);
-      (board.enPassant === null).should.be.true;
+      (board.enPassantTarget === null).should.be.true;
       fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq e3 0 1';
       board.setup(fen);
-      board.enPassant.should.equal('e3');
+      board.enPassantTarget.should.equal('e3');
+    })
+
+    it('should set halfmove clock from fen', function() {
+      var board = new Board();
+      var fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+      board.setup(fen);
+      board.halfMoveClock.should.equal(0);
+      fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 1 1';
+      board.setup(fen);
+      board.halfMoveClock.should.equal(1);
+    })
+
+    it('should set fullmove number from fen', function() {
+      var board = new Board();
+      var fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+      board.setup(fen);
+      board.fullMoveNumber.should.equal(1);
+      fen = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 2';
+      board.setup(fen);
+      board.fullMoveNumber.should.equal(2);
+    })
+  })
+
+  describe('#fenStringify()', function() {
+    it('should convert board position state to fen string', function() {
+      var board = new Board();
+      board.setup();
+console.log(board.print());
+      board.fenStringify().should.equal(Board.DEFAULT_FEN);
+      var fen = '3r2k1/ppp3pn/3p2Qp/4n3/4Nqb1/8/PPP2PPP/4R1K1 b KQkq - 1 2';
+      board.setup(fen);
+      board.fenStringify().should.equal(fen);
     })
   })
 
@@ -156,18 +189,18 @@ describe('Board', function() {
     it('should place piece', function() {
       var board = new Board();
       board.place('Ke1').should.be.true;
-      board.pieceAt('e1').should.equal('K');
+      board.pieceAt('e1').toString().should.equal('K');
+    })
+
+    it('should be able to place empty piece', function() {
+      var board = new Board();
+      board.place('e1').should.be.true;
     })
 
     it('should not be able to place piece at invalid location', function() {
       var board = new Board();
       board.place('Ki1').should.be.false;
       board.place('Ke9').should.be.false;
-    })
-
-    it('should not be able to place non specified piece', function() {
-      var board = new Board();
-      board.place('e1').should.be.false;
     })
 
     it('should not be able to place invalid piece', function() {
@@ -177,30 +210,39 @@ describe('Board', function() {
   })
 
   describe('#move()', function() {
-    it('should move', function() {
-      var board = new Board();
-      board.setup();
-      board.move('e2e4').should.be.ok;
-      board.pieceAt('e2').should.equal('');
-      board.pieceAt('e4').should.equal('P');
-    })
+    describe('illegal moves', function() {
+      it('should not be able to move piece when opponents turn', function() {
+        var board = new Board();
+        board.setup();
+        (board.move('e7e5') === null).should.be.true;
+        board.pieceAt('e7').toString().should.equal('p');
+        board.pieceAt('e5').toString().should.equal('');
+      })
 
-    it('should not move when opponents turn', function() {
-      var board = new Board();
-      board.setup();
-      (board.move('e7e5') === null).should.be.true;
-      board.pieceAt('e7').should.equal('p');
-      board.pieceAt('e5').should.equal('');
+      it('should not be able to move piece to illegal square', function() {
+        var board = new Board();
+        board.place('Pe2');
+        (board.move('e2e5') === null).should.be.true;
+      })
     })
+    describe('legal moves', function() {
+      it('should be able to move piece', function() {
+        var board = new Board();
+        board.setup();
+        board.move('e2e4').should.be.ok;
+        board.pieceAt('e2').toString().should.equal('');
+        board.pieceAt('e4').toString().should.equal('P');
+      })
 
-    it('should move and capture', function() {
-      var board = new Board();
-      board.place('Pe4');
-      board.place('pd5');
-      board.move('e4xd5').should.be.ok;
-      board.pieceAt('e4').should.be.equal('');
-      board.pieceAt('d5').should.be.equal('P');
-      board.captures.should.containEql('p');
+      it('should move piece and capture', function() {
+        var board = new Board();
+        board.place('Pe4');
+        board.place('pd5');
+        board.move('e4xd5').should.be.ok;
+        board.pieceAt('e4').toString().should.be.equal('');
+        board.pieceAt('d5').toString().should.be.equal('P');
+        board.captures.map(function (p) { return p.toString(); }).should.containEql('p');
+      })
     })
   })
 })
