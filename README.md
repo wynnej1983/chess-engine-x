@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/wynnej1983/chess-engine-x.svg?branch=master)](https://travis-ci.org/wynnej1983/chess-engine-x)
+
 chess-engine-x
 ==============
 
