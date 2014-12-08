@@ -46,7 +46,7 @@ describe('util', function() {
 
       it('should return false when at end of sequence', function() {
         var iter = new Iterator([1]);
-        iter._idx = 1;
+        iter._idx = 0;
         iter.hasNext().should.be.false;
       })
     })
@@ -86,6 +86,14 @@ describe('util', function() {
       it('should return null initially', function() {
         var iter = new Iterator([]);
         (iter.value === null).should.be.true;
+      })
+
+      it('should not be able to set value getter', function() {
+        var iter = new Iterator([1]);
+        iter.next();
+        iter.value.should.eql(1);
+        iter.value = 2;
+        iter.value.should.eql(1);
       })
 
       it('should return current item in sequence', function() {
