@@ -133,7 +133,7 @@ describe('Game', function() {
       })
     });
 
-    describe('illegal moves', function() {
+    describe('legal moves', function() {
       it('should be able to make first move of e2e4 when white starts', function() {
         var game = new Game();
         game.start();

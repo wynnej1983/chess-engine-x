@@ -39,7 +39,7 @@ describe('util', function() {
         iter.hasNext().should.be.false;
       })
 
-      it('should return true when sequence contains at one or more items', function() {
+      it('should return true when sequence contains one or more items', function() {
         var iter = new Iterator([1]);
         iter.hasNext().should.be.true;
       })
@@ -57,7 +57,7 @@ describe('util', function() {
         (iter.next() === null).should.be.true;
       })
 
-      it('should return next item when sequence contains at one or more items', function() {
+      it('should return next item when sequence contains one or more items', function() {
         var iter = new Iterator([1]);
         iter.next().should.be.eql(1);
       })
@@ -69,7 +69,7 @@ describe('util', function() {
       })
 
       it('should iterate through items in sequence', function() {
-        var hasNext = function() { return true; };
+        var hasNext = function(i) { return true; };
         var next = function(i) { return i === null ? 0 : i + 1 };
         var iter = new Iterator(hasNext, next);
         iter.next();
