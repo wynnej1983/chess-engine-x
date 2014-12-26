@@ -1,13 +1,10 @@
-var should   = require('should'),
-    Iterator = require('../lib/util.js').Iterator;
+var should            = require('should'),
+    Iterator          = require('../lib/util.js').Iterator;
+    AggregateIterator = require('../lib/util.js').AggregateIterator;
 
 describe('util', function() {
   describe('Iterator', function() {
     describe('constructor', function() {
-      it('should throw when no seq param provided', function() {
-        (function(){new Iterator()}).should.throw();
-      })
-
       it('should instantiate with sequence', function() {
         var iter = new Iterator([]);
         iter.should.be.ok;
@@ -101,6 +98,57 @@ describe('util', function() {
         iter.next();
         iter.next();
         iter.value.should.eql(2);
+      })
+    })
+  })
+
+  describe('AggregateIterator', function() {
+    describe('constructor', function() {
+      it('should instantiate with one or more Iterators', function() {
+        var iter = new AggregateIterator(new Iterator([1,2,3]), new Iterator([4,5,6]));
+        iter.should.be.ok;
+      })
+    })
+
+    describe('#hasNext', function() {
+      it('should return a boolean', function() {
+        var iter = new AggregateIterator(new Iterator([1,2,3]));
+        iter.hasNext().should.be.a.Boolean;
+      })
+
+      it('should return false when given empty sequence', function() {
+        var iter = new AggregateIterator([]);
+        iter.hasNext().should.be.false;
+      })
+
+      it('should return true when sequence contains one or more items', function() {
+        var iter = new AggregateIterator(new Iterator([1,2,3]));
+        iter.hasNext().should.be.true;
+      })
+
+      it('should return false when at end of sequence', function() {
+        var iter = new AggregateIterator(new Iterator([1,2,3]), new Iterator([4,5,6]));
+        iter.hasNext().should.be.true;
+        iter._idx = 5;
+        iter.hasNext().should.be.false;
+      })
+    })
+
+    describe('#next', function() {
+      it('should return null when given empty sequence', function() {
+        var iter = new AggregateIterator([]);
+        (iter.next() === null).should.be.true;
+      })
+
+      it('should iterate through internal iterators', function() {
+        var iter = new AggregateIterator(new Iterator([1,2,3]), new Iterator([4,5,6]));
+        iter.next();
+        iter.next();
+        iter.next();
+        iter.next();
+        iter.next();
+        iter.next();
+        iter.value.should.eql(6);
       })
     })
   })
